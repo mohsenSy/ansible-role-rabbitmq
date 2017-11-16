@@ -15,7 +15,7 @@ galaxy_info:
   # - CC-BY
   license: BSD
 
-  min_ansible_version: 1.8
+  min_ansible_version: 1.7
 
   # If this a Container Enabled role, provide the minimum Ansible Container version.
   # min_ansible_container_version:
@@ -35,12 +35,19 @@ galaxy_info:
    - name: Ubuntu
      versions:
      - all
-  - name: Denian
+   - name: Debian
      versions:
      - all
-  - name: RedHat
-    versions:
-      - all
+   - name: RedHat
+     versions:
+     - all
+  # - name: SomePlatform
+  #   versions:
+  #   - all
+  #   - 1.0
+  #   - 7
+  #   - 99.99
+
   galaxy_tags:
     - rabbitmq
     # List tags for your role here, one per line. A tag is a keyword that describes
