@@ -1,0 +1,13 @@
+- name: Download RPM file
+  get_url:
+    url: "https://github.com/rabbitmq/rabbitmq-server/releases/download/rabbitmq_v{{ RABBITMQ_VERSION | replace('.','_') }}/rabbitmq-server-{{ RABBITMQ_VERSION }}-1.el7.noarch.rpm"
+    dest: /tmp
+- name: install rabbitmq
+  yum:
+    state: present
+    name: "/tmp/rabbitmq-server-{{ RABBITMQ_VERSION }}-1.el7.noarch.rpm"
+- name: start rabbitmq server
+  service:
+    name: rabbitmq-server
+    state: started
+    enabled: true

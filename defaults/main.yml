@@ -1,0 +1,3 @@
+---
+# defaults file for rabbitmq
+RABBITMQ_VERSION: 3.6.14
