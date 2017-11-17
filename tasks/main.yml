@@ -1,3 +1,64 @@
 ---
 # tasks file for rabbitmq
 - include_tasks: "{{ ansible_os_family }}.yml"
+
+- name: Create rabbitmq users if needed
+  rabbitmq_user:
+    name: "{{ item.name }}"
+    permissions: "{{ item.perm|d('') }}"
+    state: "{{ item.state|d('present') }}"
+    tags: "{{ item.tags|d('') }}"
+  with_items:
+    - "{{ RABBITMQ_USERS }}"
+  when: RABBITMQ_USERS is defined
+- name: Enable or Disable rabbitmq plugins if needed
+  rabbitmq_plugin:
+    names: "{{ item.name }}"
+    state: "{{ item.state|d('enabled') }}"
+  with_items:
+    - "{{ RABBITMQ_PLUGINS }}"
+  when: RABBITMQ_PLUGINS is defined
+- name: Create rabbitmq virtual hosts if needed
+  rabbitmq_vhost:
+    name: "{{ item.name }}"
+    state: "{{ item.state|d('present') }}"
+  with_items:
+    - "{{ RABBITMQ_VHOSTS }}"
+  when: RABBITMQ_VHOSTS is defined
+- name: Create rabbitmq exchanges if needed
+  rabbitmq_exchange:
+    login_user: "{{ RABBITMQ_USER }}"
+    login_password: "{{ RABBITMQ_PASS }}"
+    login_port: "{{ RABBITMQ_PORT|d('15672') }}"
+    name: "{{ item.name }}"
+    state: "{{ item.state|d('present') }}"
+    exchange_type: "{{ item.type|d('direct') }}"
+    vhost: "{{ item.vhost|d('/') }}"
+  with_items:
+    - "{{ RABBITMQ_EXCHANGES }}"
+  when: RABBITMQ_EXCHANGES is defined
+- name: Create rabbitmq queues if needed
+  rabbitmq_queue:
+    login_user: "{{ RABBITMQ_USER }}"
+    login_password: "{{ RABBITMQ_PASS }}"
+    login_port: "{{ RABBITMQ_PORT|d('15672') }}"
+    name: "{{ item.name }}"
+    state: "{{ item.state|d('present') }}"
+    vhost: "{{ item.vhost|d('/') }}"
+  with_items:
+    - "{{ RABBITMQ_QUEUES }}"
+  when: RABBITMQ_QUEUES is defined
+- name: Create rabbitmq bindings if needed
+  rabbitmq_binding:
+    login_user: "{{ RABBITMQ_USER }}"
+    login_password: "{{ RABBITMQ_PASS }}"
+    login_port: "{{ RABBITMQ_PORT|d('15672') }}"
+    name: "{{ item.name }}"
+    state: "{{ item.state|d('present') }}"
+    vhost: "{{ item.vhost|d('/') }}"
+    destination: "{{ item.destination }}"
+    destination_type: "{{ item.type|d('queue') }}"
+    routing_key: "{{ item.key|d('') }}"
+  with_items:
+    - "{{ RABBITMQ_BINDINGS }}"
+  when: RABBITMQ_BINDINGS is defined
