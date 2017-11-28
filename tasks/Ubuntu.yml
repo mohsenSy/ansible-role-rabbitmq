@@ -10,3 +10,11 @@
   service:
     name: rabbitmq-server
     state: started
+- name: Install pip
+  apt:
+    name: python-pip
+    state: present
+- name: Install requests package
+  pip:
+    name: requests
+    state: present

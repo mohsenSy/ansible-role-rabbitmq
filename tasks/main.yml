@@ -2,9 +2,17 @@
 # tasks file for rabbitmq
 - include_tasks: "{{ ansible_os_family }}.yml"
 
+- name: Create rabbitmq virtual hosts if needed
+  rabbitmq_vhost:
+    name: "{{ item.name }}"
+    state: "{{ item.state|d('present') }}"
+  with_items:
+    - "{{ RABBITMQ_VHOSTS }}"
+  when: RABBITMQ_VHOSTS is defined
 - name: Create rabbitmq users if needed
   rabbitmq_user:
     name: "{{ item.name }}"
+    password: "{{ item.password|d('') }}"
     permissions: "{{ item.perm|d('') }}"
     state: "{{ item.state|d('present') }}"
     tags: "{{ item.tags|d('') }}"
@@ -18,13 +26,6 @@
   with_items:
     - "{{ RABBITMQ_PLUGINS }}"
   when: RABBITMQ_PLUGINS is defined
-- name: Create rabbitmq virtual hosts if needed
-  rabbitmq_vhost:
-    name: "{{ item.name }}"
-    state: "{{ item.state|d('present') }}"
-  with_items:
-    - "{{ RABBITMQ_VHOSTS }}"
-  when: RABBITMQ_VHOSTS is defined
 - name: Create rabbitmq exchanges if needed
   rabbitmq_exchange:
     login_user: "{{ RABBITMQ_USER }}"

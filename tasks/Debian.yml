@@ -11,3 +11,11 @@
     name: rabbitmq-server
     state: started
     enabled: true
+- name: Install pip
+  apt:
+    name: python-pip
+    state: present
+- name: Install requests package
+  pip:
+    name: requests
+    state: present
