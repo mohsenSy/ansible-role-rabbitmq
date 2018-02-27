@@ -1,4 +1,4 @@
-Role Name
+rabbitmq
 =========
 
 This role can be used to install rabbitmq server on Ubuntu, Debian and RedHat servers.
