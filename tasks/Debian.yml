@@ -6,6 +6,7 @@
   apt:
     state: present
     deb: "/tmp/rabbitmq-server_{{ RABBITMQ_VERSION }}-1_all.deb"
+    cache_valid_time: 86400
 - name: start rabbitmq server
   service:
     name: rabbitmq-server
